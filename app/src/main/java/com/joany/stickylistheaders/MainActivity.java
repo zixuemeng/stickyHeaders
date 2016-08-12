@@ -1,9 +1,16 @@
 package com.joany.stickylistheaders;
 
+import android.app.Activity;
+import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.os.Handler;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -16,7 +23,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     private static String[] originalString = new String[]{
             "傅园慧", "张继科", "孙杨", "徐莉佳", "宁泽涛", "何炅", "汪涵", "谢娜",
@@ -37,6 +44,13 @@ public class MainActivity extends AppCompatActivity {
     private TextView stickyHeader;
     private SideBar sideBar;
 
+    private ActionBarDrawerToggle actionBarDrawerToggle;
+    private DrawerLayout drawerLayout;
+    private SwipeRefreshLayout swipeRefreshLayout;
+
+    private Button clearBtn;
+    private Button addBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +63,12 @@ public class MainActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.listview);
         stickyHeader = (TextView) findViewById(R.id.stickyHeader);
         sideBar = (SideBar) findViewById(R.id.sideBar);
+
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh_layout);
+
+        clearBtn = (Button) findViewById(R.id.clearBtn);
+        addBtn = (Button) findViewById(R.id.addBtn);
     }
 
     private void initView(){
@@ -56,6 +76,27 @@ public class MainActivity extends AppCompatActivity {
         listView.setAdapter(new ListViewAdapter(this, list));
         listView.setOnScrollListener(onScrollListener);
         sideBar.setListView(listView);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                }, 1000);
+            }
+        });
+
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this,drawerLayout,
+                R.mipmap.ic_drawer,R.string.drawer_open,R.string.drawer_close);
+
+        drawerLayout.setDrawerListener(actionBarDrawerToggle);
+
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
+
     }
 
     private AbsListView.OnScrollListener onScrollListener = new AbsListView.OnScrollListener() {
@@ -108,4 +149,24 @@ public class MainActivity extends AppCompatActivity {
         return null;
     }
 
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        actionBarDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        actionBarDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        //The action bar home/up action should open or close the drawer
+        if(actionBarDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

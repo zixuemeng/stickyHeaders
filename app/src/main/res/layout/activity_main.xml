@@ -1,27 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!--
-    使用了insetdrawable，将一个drawable嵌入到另外一个drawable内部，并且在内部留一些间距
-    -->
-    <ListView
-        android:id="@+id/listview"
+    <FrameLayout
         android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <!--
+            使用了insetdrawable，将一个drawable嵌入到另外一个drawable内部，并且在内部留一些间距
+            -->
+            <ListView
+                android:id="@+id/listview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@drawable/divider"
+                android:dividerHeight="1dp"
+                android:listSelector="@drawable/listview_item_selector"
+                android:scrollbars="none"></ListView>
+
+            <include layout="@layout/sticky_header_layout" />
+
+            <com.joany.stickylistheaders.view.SideBar
+                android:id="@+id/sideBar"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center"
+                android:background="#ff8e8e8e" />
+        </android.support.v4.widget.SwipeRefreshLayout>
+    </FrameLayout>
+
+
+    <LinearLayout
+        android:id="@+id/left_drawer"
+        android:layout_width="200dp"
         android:layout_height="match_parent"
-        android:scrollbars="none"
-        android:divider="@drawable/divider"
-        android:dividerHeight="1dp"
-        android:listSelector="@drawable/listview_item_selector">
-    </ListView>
+        android:layout_gravity="start"
+        android:background="@color/white"
+        android:orientation="vertical">
 
-    <include layout="@layout/sticky_header_layout"/>
+        <Button
+            android:id="@+id/clearBtn"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="left|center_vertical"
+            android:text="Clear list" />
 
-    <com.joany.stickylistheaders.view.SideBar
-        android:id="@+id/sideBar"
-        android:layout_width="30dp"
-        android:layout_height="wrap_content"
-        android:background="#ff8e8e8e"
-        android:layout_gravity="right|center"/>
-</FrameLayout>
+        <Button
+            android:id="@+id/addBtn"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="left|center_vertical"
+            android:text="Add" />
+    </LinearLayout>
+
+</android.support.v4.widget.DrawerLayout>
