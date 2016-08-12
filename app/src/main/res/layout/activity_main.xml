@@ -23,16 +23,17 @@
                 android:dividerHeight="1dp"
                 android:listSelector="@drawable/listview_item_selector"
                 android:scrollbars="none"></ListView>
-
-            <include layout="@layout/sticky_header_layout" />
-
-            <com.joany.stickylistheaders.view.SideBar
-                android:id="@+id/sideBar"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right|center"
-                android:background="#ff8e8e8e" />
         </android.support.v4.widget.SwipeRefreshLayout>
+
+        <include layout="@layout/sticky_header_layout" />
+
+        <com.joany.stickylistheaders.view.SideBar
+            android:id="@+id/sideBar"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center"
+            android:background="#ff8e8e8e" />
+
     </FrameLayout>
 
 
